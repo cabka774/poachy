@@ -1,0 +1,10 @@
+{
+  "id": "a1b2c3d4-e5f6-4789-ab01-cd23ef456789",
+  "version": 1,
+  "name": "Poachy API Mock",
+  "protocol": "http",
+  "port": 4500,
+  "mockSrc": "./Poachy API Mock.js",
+  "autoRestartOnChange": true,
+  "logging": { "level": "verbose", "showBody": true }
+}

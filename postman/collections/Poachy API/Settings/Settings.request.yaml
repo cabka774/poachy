@@ -1,0 +1,17 @@
+$kind: http-request
+name: Settings
+method: GET
+url: '{{baseUrl}}/settings'
+description: 'Application settings'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response time is less than 2000ms", function () {
+          pm.expect(pm.response.responseTime).to.be.below(2000);
+      });

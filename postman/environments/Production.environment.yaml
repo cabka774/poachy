@@ -1,0 +1,8 @@
+name: Production
+values:
+  - key: baseUrl
+    value: 'https://your-production-domain.com'
+    enabled: true
+  - key: appName
+    value: 'Poachy'
+    enabled: true

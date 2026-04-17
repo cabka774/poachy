@@ -2,32 +2,35 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
+     *
+     * Creates a default admin user so you can log in right away.
+     * Run with: php artisan db:seed
+     *
+     * Login credentials:
+     *   Email:    admin@poachy.com
+     *   Password: password123
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // firstOrCreate: if the user already exists, skip — no duplicate
+        User::firstOrCreate(
+            ['email' => 'admin@poachy.com'],
+            [
+                'name'     => 'Admin',
+                'password' => Hash::make('password123'),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        Tenant::all()->each(function ($tenant) {
-            $tenant->run(function () {
-                $this->call([
-                ]);
-            });
-        });
+        $this->command->info('✅ Default admin user ready.');
+        $this->command->info('   Email:    admin@poachy.com');
+        $this->command->info('   Password: password123');
     }
 }

@@ -1,0 +1,6 @@
+$kind: collection
+name: Poachy API
+description: 'API collection for Poachy - a multi-tenant POS application for East Africa'
+variables:
+  - key: baseUrl
+    value: 'http://localhost:8000'

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poachy Frontend Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --p:#16a34a; --pd:#15803d; --bg:#f3f4f6; --line:#e5e7eb; --txt:#111827; --muted:#6b7280; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, sans-serif; background: var(--bg); color: var(--txt); }
+    .hidden { display:none !important; }
+    .login { min-height:100vh; display:grid; place-items:center; padding:20px; background:linear-gradient(135deg,#eefcf2,#f6f7f8 45%); }
+    .card { width:min(430px,100%); background:#fff; border:1px solid var(--line); border-radius:18px; padding:2rem; box-shadow:0 20px 40px rgba(16,24,40,.08); }
+    .logo { text-align:center; margin-bottom:1.6rem; }
+    .logo h1 { margin:0; color:var(--p); font-size:2rem; font-weight:800; }
+    .logo p { margin:.2rem 0 0; color:var(--muted); font-size:.9rem; }
+    h2 { margin:0; font-size:1.7rem; }
+    .lead { margin:.45rem 0 1.2rem; color:var(--muted); }
+    label { display:block; margin:.2rem 0 .35rem; font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:#4b5563; font-weight:600; }
+    input { width:100%; border:1px solid var(--line); border-radius:10px; padding:.85rem .9rem; margin-bottom:1rem; }
+    .row { display:flex; justify-content:flex-end; margin-bottom:1rem; }
+    a { color:var(--p); text-decoration:none; font-weight:600; }
+    .btn { width:100%; border:0; background:var(--p); color:#fff; padding:.9rem; border-radius:10px; font-weight:700; cursor:pointer; }
+    .btn:hover { background:var(--pd); }
+    .center { text-align:center; margin-top:1rem; color:var(--muted); font-size:.9rem; }
+
+    .shell { display:flex; min-height:100vh; }
+    .sidebar { width:240px; background:var(--p); color:#fff; display:flex; flex-direction:column; }
+    .side-top { padding:1.4rem 1.1rem; border-bottom:1px solid rgba(255,255,255,.2); }
+    .side-top h2 { margin:0; font-size:1.7rem; }
+    .side-top p { margin:.2rem 0 0; opacity:.9; font-size:.82rem; }
+    .menu { display:grid; gap:.3rem; padding:.8rem; }
+    .menu button { border:0; text-align:left; background:transparent; color:#e8f7ec; padding:.65rem .7rem; border-radius:10px; cursor:pointer; font-weight:500; }
+    .menu button.active { background:#fff; color:var(--p); font-weight:700; }
+    .merchant { margin-top:auto; border-top:1px solid rgba(255,255,255,.2); padding:.9rem; display:flex; gap:.7rem; align-items:center; }
+    .avatar { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; background:rgba(255,255,255,.2); font-weight:700; }
+    .main { flex:1; overflow:auto; }
+    .top { height:72px; border-bottom:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 1.1rem; gap:.8rem; }
+    .search { width:min(420px,100%); border:1px solid var(--line); border-radius:10px; padding:.7rem .9rem; background:#f9fafb; }
+    .actions { display:flex; gap:.8rem; align-items:center; }
+    .chip { border:1px solid var(--line); border-radius:999px; padding:.5rem .75rem; background:#fff; font-size:.82rem; font-weight:600; }
+    .user { width:36px; height:36px; border-radius:50%; display:grid; place-items:center; background:var(--p); color:#fff; font-weight:700; }
+    .content { padding:1.1rem; }
+    .page h1 { margin:0; font-size:2rem; }
+    .page p { color:var(--muted); margin:.35rem 0 1rem; }
+    .grid4 { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.8rem; margin-bottom:.9rem; }
+    .card2 { background:#fff; border:1px solid var(--line); border-radius:12px; padding:1rem; }
+    .value { font-size:1.9rem; font-weight:700; margin-top:.2rem; }
+    .db { display:grid; grid-template-columns:2fr 1fr; gap:.9rem; margin-bottom:.9rem; }
+    .chart { height:220px; border:1px dashed #d1d5db; border-radius:10px; background:#fff; position:relative; overflow:hidden; }
+    .line { position:absolute; left:4%; right:4%; bottom:16%; height:56%; border-bottom:3px solid #16a34a; border-radius:100% 100% 0 0; transform:skewX(-18deg); }
+    .alert { border:1px solid #fde68a; background:#fffbeb; border-radius:10px; padding:.7rem; margin-bottom:.55rem; font-size:.88rem; }
+    table { width:100%; border-collapse:collapse; font-size:.9rem; }
+    th, td { text-align:left; padding:.75rem; border-bottom:1px solid var(--line); }
+    tr:nth-child(even) td { background:#f9fafb; }
+    .badge { padding:.2rem .55rem; border-radius:999px; font-size:.75rem; font-weight:700; }
+    .ok { background:#dcfce7; color:#15803d; } .warn { background:#fef3c7; color:#92400e; } .bad { background:#fee2e2; color:#dc2626; }
+    .two { display:grid; grid-template-columns:2fr 1fr; gap:.9rem; }
+    .products { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
+    .prod { border:1px solid var(--line); border-radius:12px; padding:.7rem; background:#fff; }
+    .thumb { width:44px; height:44px; border-radius:9px; background:#ecfdf3; display:grid; place-items:center; color:var(--p); font-weight:700; margin-bottom:.55rem; }
+    .ksh { color:var(--p); font-weight:700; }
+    .pay { display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin:.8rem 0; }
+    .btn2 { border:1px solid var(--line); border-radius:8px; background:#fff; padding:.6rem .4rem; font-weight:600; }
+    .tools { display:flex; gap:.7rem; flex-wrap:wrap; align-items:center; margin-bottom:.9rem; }
+    .in { border:1px solid var(--line); border-radius:10px; padding:.7rem .85rem; background:#fff; }
+    .reports { display:grid; grid-template-columns:1.4fr 1fr; gap:.9rem; }
+    .bars { display:flex; align-items:end; gap:.35rem; height:200px; }
+    .bars span { flex:1; background:var(--p); border-radius:7px 7px 0 0; min-height:32%; }
+    .pie { width:220px; height:220px; border-radius:50%; margin:1rem auto; background:conic-gradient(#16a34a 0 35%,#3b82f6 35% 58%,#d97706 58% 73%,#7c3aed 73% 84%,#ec4899 84% 92%,#9ca3af 92% 100%); }
+    .coming { min-height:360px; display:grid; place-items:center; text-align:center; color:var(--muted); }
+    .coming h2 { color:var(--txt); margin-bottom:.4rem; }
+    @media (max-width:1180px){ .products{grid-template-columns:repeat(3,minmax(0,1fr));} .grid4{grid-template-columns:repeat(2,minmax(0,1fr));} }
+    @media (max-width:960px){ .shell{flex-direction:column;} .sidebar{width:100%;} .menu{grid-template-columns:repeat(2,minmax(0,1fr));} .db,.two,.reports{grid-template-columns:1fr;} }
+    @media (max-width:640px){ .menu{grid-template-columns:1fr;} .products{grid-template-columns:repeat(2,minmax(0,1fr));} .grid4{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+  <section id="login" class="login">
+    <div class="card">
+      <div class="logo"><h1>Poachy</h1><p>The Merchant's Ledger</p></div>
+      <h2>Welcome back</h2><p class="lead">Securely access your merchant dashboard.</p>
+      <label>Email Address</label><input value="merchant@poachy.co.ke">
+      <label>Password</label><input value="password" type="password">
+      <div class="row"><a href="#">Forgot password?</a></div>
+      <button class="btn" onclick="showApp()">Sign In to Poachy</button>
+      <div class="center">Don't have an account? <a href="#">Register</a></div>
+    </div>
+  </section>
+
+  <section id="app" class="shell hidden">
+    <aside class="sidebar">
+      <div class="side-top"><h2>Poachy</h2><p>Business Manager</p></div>
+      <nav class="menu">
+        <button class="active" data-page="dashboard">Dashboard</button>
+        <button data-page="pos">Point of Sale</button>
+        <button data-page="inventory">Inventory</button>
+        <button data-page="expenses">Expenses</button>
+        <button data-page="reports">Reports</button>
+        <button data-page="ecommerce">Ecommerce</button>
+        <button data-page="customers">Customers</button>
+        <button data-page="settings">Settings</button>
+      </nav>
+      <div class="merchant"><div class="avatar">KM</div><div><div style="font-weight:700;">Kenyan Merchant</div><div style="font-size:.8rem;opacity:.85;">Shop Owner</div></div></div>
+    </aside>
+    <main class="main">
+      <header class="top"><input class="search" placeholder="Search products, orders, customers..."><div class="actions"><button class="chip">Notifications</button><div class="user">KM</div></div></header>
+      <div class="content">
+        <section class="page" id="dashboard">
+          <h1>Dashboard</h1><p>Welcome back! Here's what's happening with your business today.</p>
+          <div class="grid4">
+            <article class="card2"><strong>Today's Sales</strong><div class="value">KSh 88,450</div></article>
+            <article class="card2"><strong>Total Orders</strong><div class="value">156</div></article>
+            <article class="card2"><strong>Expenses Today</strong><div class="value">KSh 12,300</div></article>
+            <article class="card2"><strong>Low Stock Alerts</strong><div class="value">4</div></article>
+          </div>
+          <div class="db">
+            <article class="card2"><strong>Sales Overview</strong><p>Last 7 days performance</p><div class="chart"><div class="line"></div></div></article>
+            <article class="card2"><strong>Low Stock Alerts</strong><p>Items running low</p>
+              <div class="alert"><strong>Cooking Oil 1L</strong><div>3 bottles remaining</div></div>
+              <div class="alert"><strong>Sugar 1kg</strong><div>5 packets remaining</div></div>
+              <div class="alert"><strong>Rice 2kg</strong><div>8 bags remaining</div></div>
+            </article>
+          </div>
+          <article class="card2">
+            <strong>Recent Transactions</strong>
+            <table>
+              <thead><tr><th>Time</th><th>Product</th><th>Amount</th><th>Payment</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>10:45 AM</td><td>Rice 2kg</td><td>KSh 450</td><td>Mpesa</td><td><span class="badge ok">completed</span></td></tr>
+                <tr><td>10:32 AM</td><td>Cooking Oil 1L</td><td>KSh 280</td><td>Cash</td><td><span class="badge ok">completed</span></td></tr>
+                <tr><td>10:18 AM</td><td>Bread (4 loaves)</td><td>KSh 200</td><td>Card</td><td><span class="badge ok">completed</span></td></tr>
+                <tr><td>09:28 AM</td><td>Eggs (tray)</td><td>KSh 450</td><td>Mpesa</td><td><span class="badge warn">pending</span></td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="page hidden" id="pos">
+          <h1>Point of Sale</h1><p>Select products to add to cart.</p>
+          <div class="two">
+            <article class="card2">
+              <input class="in" style="width:100%;margin-bottom:.7rem;" placeholder="Search products...">
+              <div class="products">
+                <div class="prod"><div class="thumb">R</div><strong>Rice 2kg</strong><div class="ksh">KSh 450</div></div>
+                <div class="prod"><div class="thumb">O</div><strong>Cooking Oil 1L</strong><div class="ksh">KSh 280</div></div>
+                <div class="prod"><div class="thumb">S</div><strong>Sugar 1kg</strong><div class="ksh">KSh 150</div></div>
+                <div class="prod"><div class="thumb">B</div><strong>Bread</strong><div class="ksh">KSh 50</div></div>
+              </div>
+            </article>
+            <article class="card2">
+              <strong>Current Sale</strong><p>3 items</p>
+              <table><tbody><tr><td>Rice 2kg x1</td><td>KSh 450</td></tr><tr><td>Sugar 1kg x1</td><td>KSh 150</td></tr><tr><td>Milk 500ml x2</td><td>KSh 140</td></tr></tbody></table>
+              <div style="display:flex;justify-content:space-between;margin-top:.6rem;font-weight:700;"><span>Subtotal</span><span>KSh 740</span></div>
+              <div class="pay"><button class="btn2">Cash</button><button class="btn2">Mpesa</button><button class="btn2">Card</button></div>
+              <button class="btn">Charge KSh 740</button>
+            </article>
+          </div>
+        </section>
+
+        <section class="page hidden" id="inventory">
+          <h1>Inventory Management</h1><p>Manage your product stock and pricing.</p>
+          <div class="tools"><button class="btn" style="width:auto;padding:.7rem 1rem;">+ Add Product</button><input class="in" style="min-width:260px;flex:1;" placeholder="Search by name or SKU..."><select class="in"><option>All Categories</option></select></div>
+          <article class="card2"><table><thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+            <tr><td>Rice 2kg</td><td>GRN-001</td><td>Grains</td><td>KSh 450</td><td>24</td><td><span class="badge ok">In Stock</span></td><td>Edit | Delete</td></tr>
+            <tr><td>Cooking Oil 1L</td><td>CKG-002</td><td>Cooking</td><td>KSh 280</td><td>3</td><td><span class="badge warn">Low Stock</span></td><td>Edit | Delete</td></tr>
+            <tr><td>Laundry Soap</td><td>HYG-005</td><td>Hygiene</td><td>KSh 80</td><td>0</td><td><span class="badge bad">Out of Stock</span></td><td>Edit | Delete</td></tr>
+          </tbody></table></article>
+        </section>
+
+        <section class="page hidden" id="reports">
+          <h1>Reports</h1><p>Track performance, profitability, and category trends.</p>
+          <div class="tools"><input class="in" type="date"><input class="in" type="date"><button class="btn2">Export PDF</button><button class="btn2">Export Excel</button></div>
+          <div class="grid4">
+            <article class="card2"><strong>Total Revenue</strong><div class="value">KSh 2,920,000</div></article>
+            <article class="card2"><strong>Total Sales</strong><div class="value">6,430</div></article>
+            <article class="card2"><strong>Total Expenses</strong><div class="value">KSh 1,140,000</div></article>
+            <article class="card2"><strong>Net Profit</strong><div class="value">KSh 1,780,000</div></article>
+          </div>
+          <div class="reports">
+            <article class="card2"><strong>Monthly Revenue</strong><div class="bars"><span style="height:62%"></span><span style="height:70%"></span><span style="height:66%"></span><span style="height:82%"></span><span style="height:98%"></span><span style="height:88%"></span></div></article>
+            <article class="card2"><strong>Sales by Category</strong><div class="pie"></div></article>
+          </div>
+        </section>
+
+        <section class="page hidden" id="expenses"><div class="card2 coming"><div><h2>Expense Management</h2><p>Track and manage your business expenses.</p><button class="btn2">Coming Soon</button></div></div></section>
+        <section class="page hidden" id="ecommerce"><div class="card2 coming"><div><h2>Ecommerce Marketplace</h2><p>Sell online and manage orders.</p><button class="btn2">Coming Soon</button></div></div></section>
+        <section class="page hidden" id="customers"><div class="card2 coming"><div><h2>Customer Management</h2><p>Know your customers better.</p><button class="btn2">Coming Soon</button></div></div></section>
+        <section class="page hidden" id="settings"><div class="card2 coming"><div><h2>Settings</h2><p>Configure your business preferences.</p><button class="btn2">Coming Soon</button></div></div></section>
+      </div>
+    </main>
+  </section>
+
+  <script>
+    function showApp() {
+      document.getElementById("login").classList.add("hidden");
+      document.getElementById("app").classList.remove("hidden");
+    }
+    const buttons = document.querySelectorAll(".menu button");
+    const pages = document.querySelectorAll(".page");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        buttons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const page = btn.dataset.page;
+        pages.forEach((p) => p.classList.toggle("hidden", p.id !== page));
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+name: Development
+values:
+  - key: baseUrl
+    value: 'http://localhost:8000'
+    enabled: true
+  - key: appName
+    value: 'Poachy (Dev)'
+    enabled: true

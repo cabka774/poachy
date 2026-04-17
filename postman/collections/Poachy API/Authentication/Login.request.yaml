@@ -1,0 +1,17 @@
+$kind: http-request
+name: Login
+method: GET
+url: '{{baseUrl}}/login'
+description: 'Login page for Poachy application'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response time is less than 2000ms", function () {
+          pm.expect(pm.response.responseTime).to.be.below(2000);
+      });
