@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Sale extends Model
 {
     protected $fillable = [
-        'user_id', 'receipt_number', 'subtotal', 'tax', 'total',
+        'user_id', 'customer_id', 'receipt_number', 'subtotal', 'tax', 'total',
         'payment_method', 'customer_name', 'customer_phone',
     ];
 
@@ -15,6 +15,11 @@ class Sale extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     /** A sale has many line items */

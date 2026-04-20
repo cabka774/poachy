@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\ExpenseController;
 use App\Http\Controllers\Api\InventoryController;
 use App\Http\Controllers\Api\POSController;
 use App\Http\Controllers\Api\ReportsController;
+use App\Http\Controllers\Api\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,4 +50,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Reports
     Route::get('/reports', [ReportsController::class, 'index']);
+
+    // Expenses
+    Route::get('/expenses', [ExpenseController::class, 'index']);
+    Route::post('/expenses', [ExpenseController::class, 'store']);
+    Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
+
+    // Customers
+    Route::get('/customers', [CustomerController::class, 'index']);
+    Route::post('/customers', [CustomerController::class, 'store']);
+    Route::put('/customers/{id}', [CustomerController::class, 'update']);
+    Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+
+    // Settings
+    Route::get('/settings', [SettingsController::class, 'index']);
+    Route::put('/settings', [SettingsController::class, 'update']);
+    Route::post('/settings/password', [SettingsController::class, 'changePassword']);
 });
