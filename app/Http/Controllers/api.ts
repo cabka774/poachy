@@ -72,6 +72,7 @@ async function request<T>(
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
+    credentials: 'include',   // required for Sanctum CSRF cookies
   });
 
   // If the server returns 401 (Unauthorized), the token has expired or is invalid

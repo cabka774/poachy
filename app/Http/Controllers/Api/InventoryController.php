@@ -3,57 +3,55 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
-        return response()->json([
-            'data' => [],
-            'total' => 0,
-        ]);
+        $products = Product::orderBy('name')->get();
+        return response()->json(['data' => $products, 'total' => $products->count()]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        $payload = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'sku' => ['nullable', 'string', 'max:255'],
-            'category' => ['nullable', 'string', 'max:255'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
+        $validated = $request->validate([
+            'name'          => 'required|string|max:255',
+            'sku'           => 'required|string|max:50|unique:products',
+            'category'      => 'required|string|max:100',
+            'image'         => 'nullable|string|max:10',
+            'price'         => 'required|numeric|min:0',
+            'stock'         => 'required|integer|min:0',
+            'reorder_level' => 'nullable|integer|min:0',
         ]);
 
-        return response()->json([
-            'message' => 'Created (demo mode)',
-            'data' => array_merge(['id' => 1, 'status' => 'In Stock'], $payload),
-        ], 201);
+        $product = Product::create($validated);
+        return response()->json(['data' => $product, 'message' => 'Product added successfully'], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
-        $updates = $request->validate([
-            'name' => ['sometimes', 'string', 'max:255'],
-            'sku' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'category' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'price' => ['sometimes', 'numeric', 'min:0'],
-            'stock' => ['sometimes', 'integer', 'min:0'],
+        $product = Product::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'          => 'sometimes|string|max:255',
+            'category'      => 'sometimes|string|max:100',
+            'image'         => 'sometimes|string|max:10',
+            'price'         => 'sometimes|numeric|min:0',
+            'stock'         => 'sometimes|integer|min:0',
+            'reorder_level' => 'sometimes|integer|min:0',
         ]);
 
-        return response()->json([
-            'message' => 'Updated (demo mode)',
-            'id' => (int) $id,
-            'updates' => $updates,
-        ]);
+        $product->update($validated);
+        return response()->json(['data' => $product, 'message' => 'Product updated successfully']);
     }
 
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        return response()->json([
-            'message' => 'Deleted (demo mode)',
-            'id' => (int) $id,
-        ]);
+        Product::findOrFail($id)->delete();
+        return response()->json(['message' => 'Product deleted successfully']);
     }
 }
 

@@ -25,6 +25,13 @@ class AuthController extends Controller
             ]);
         }
 
+        // Keep password hashes aligned with current hashing cost/driver.
+        // This prevents slow logins after lowering cost for local dev, and
+        // transparently upgrades hashes when security settings increase.
+        if (Hash::needsRehash($user->password)) {
+            $user->forceFill(['password' => Hash::make($credentials['password'])])->save();
+        }
+
         $token = $user->createToken('poachy')->plainTextToken;
 
         return response()->json([
@@ -45,7 +52,11 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user = User::create($data);
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
         $token = $user->createToken('poachy')->plainTextToken;
 
         return response()->json([
