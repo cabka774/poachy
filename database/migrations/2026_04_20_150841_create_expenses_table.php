@@ -17,6 +17,9 @@ return new class extends Migration
             $table->date('date');
             $table->string('notes')->nullable();
             $table->timestamps();
+
+            $table->index(['user_id', 'date']);
+            $table->index(['user_id', 'category']);
         });
     }
 

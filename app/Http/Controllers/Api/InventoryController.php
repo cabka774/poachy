@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
+    use ApiResponse;
+
     public function index(): JsonResponse
     {
         $products = Product::orderBy('name')->get();
-        return response()->json(['data' => $products, 'total' => $products->count()]);
+        return $this->success($products, null, 200, ['total' => $products->count()]);
     }
 
     public function store(Request $request): JsonResponse
@@ -28,7 +31,7 @@ class InventoryController extends Controller
         ]);
 
         $product = Product::create($validated);
-        return response()->json(['data' => $product, 'message' => 'Product added successfully'], 201);
+        return $this->created($product, 'Product added successfully');
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -45,13 +48,13 @@ class InventoryController extends Controller
         ]);
 
         $product->update($validated);
-        return response()->json(['data' => $product, 'message' => 'Product updated successfully']);
+        return $this->success($product, 'Product updated successfully');
     }
 
     public function destroy(int $id): JsonResponse
     {
         Product::findOrFail($id)->delete();
-        return response()->json(['message' => 'Product deleted successfully']);
+        return $this->success(null, 'Product deleted successfully');
     }
 }
 

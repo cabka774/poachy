@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Models\Customer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    use ApiResponse;
+
     public function index(Request $request): JsonResponse
     {
         $customers = Customer::where('user_id', $request->user()->id)
@@ -29,7 +32,7 @@ class CustomerController extends Controller
                 'joined' => $c->created_at?->format('d M Y'),
             ]);
 
-        return response()->json(['data' => $customers, 'total' => $customers->count()]);
+        return $this->success($customers, null, 200, ['total' => $customers->count()]);
     }
 
     public function store(Request $request): JsonResponse
@@ -42,7 +45,7 @@ class CustomerController extends Controller
         ]);
 
         $customer = Customer::create(array_merge($validated, ['user_id' => $request->user()->id]));
-        return response()->json(['data' => $customer, 'message' => 'Customer added'], 201);
+        return $this->created($customer, 'Customer added');
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -55,13 +58,13 @@ class CustomerController extends Controller
             'location' => 'sometimes|nullable|string|max:255',
         ]));
 
-        return response()->json(['data' => $customer, 'message' => 'Customer updated']);
+        return $this->success($customer, 'Customer updated');
     }
 
     public function destroy(Request $request, int $id): JsonResponse
     {
         Customer::where('id', $id)->where('user_id', $request->user()->id)->delete();
-        return response()->json(['message' => 'Customer deleted']);
+        return $this->success(null, 'Customer deleted');
     }
 }
 

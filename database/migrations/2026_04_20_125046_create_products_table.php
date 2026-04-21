@@ -18,6 +18,10 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->integer('reorder_level')->default(10);
             $table->timestamps();
+
+            $table->index('name');
+            $table->index('category');
+            $table->index('stock');
         });
     }
 

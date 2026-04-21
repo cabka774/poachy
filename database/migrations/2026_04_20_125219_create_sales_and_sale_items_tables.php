@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('customer_name')->nullable();
             $table->string('customer_phone')->nullable();
             $table->timestamps();
+
+            $table->index('created_at');
+            $table->index(['user_id', 'created_at']);
         });
 
         Schema::create('sale_items', function (Blueprint $table) {

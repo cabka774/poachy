@@ -24,12 +24,30 @@
     <div class="brand"><h1 class="logo">Poachy</h1><p class="sub">The Merchant's Ledger</p></div>
     <h2>Welcome back</h2>
     <p>Securely access your merchant dashboard.</p>
-    <label>Email Address</label>
-    <input type="email" value="merchant@poachy.co.ke">
-    <label>Password</label>
-    <input type="password" value="password">
-    <div class="meta"><a href="#" class="link">Forgot password?</a></div>
-    <a href="{{ route('poachy.dashboard') }}" class="btn">Sign In to Poachy</a>
+    <form method="POST" action="{{ route('poachy.login.submit') }}">
+        @csrf
+
+        <label>Email Address</label>
+        <input type="email" name="email" value="{{ old('email', 'admin@poachy.com') }}" autocomplete="email" required>
+        @error('email')
+            <div style="margin:-0.6rem 0 1rem; color:#dc2626; font-size:.85rem; font-weight:600;">{{ $message }}</div>
+        @enderror
+
+        <label>Password</label>
+        <input type="password" name="password" value="" autocomplete="current-password" required>
+        @error('password')
+            <div style="margin:-0.6rem 0 1rem; color:#dc2626; font-size:.85rem; font-weight:600;">{{ $message }}</div>
+        @enderror
+
+        <div class="meta">
+            <label style="display:flex; align-items:center; gap:.5rem; margin:0; text-transform:none; letter-spacing:0; font-weight:600;">
+                <input type="checkbox" name="remember" value="1" style="width:auto; margin:0;">
+                Remember me
+            </label>
+        </div>
+
+        <button type="submit" class="btn">Sign In to Poachy</button>
+    </form>
     <div class="register">Don't have an account? <a href="#" class="link">Register</a></div>
 </div>
 </body>

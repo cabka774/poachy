@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\JsonResponse;
@@ -10,6 +11,8 @@ use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
+    use ApiResponse;
+
     public function index(): JsonResponse
     {
         $todaySales = (float) Sale::whereDate('created_at', today())->sum('total');
@@ -61,7 +64,7 @@ class DashboardController extends Controller
                 'reorder' => $p->reorder_level,
             ]);
 
-        return response()->json([
+        return $this->success([
             'stats' => [
                 ['label' => "Today's Sales", 'value' => 'KSh ' . number_format($todaySales, 0), 'trend' => '+0%', 'up' => true],
                 ['label' => 'Total Orders', 'value' => (string) $todayOrders, 'trend' => '+0%', 'up' => true],

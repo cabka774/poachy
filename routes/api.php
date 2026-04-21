@@ -25,11 +25,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 // ── Public routes (no login required) ────────────────────────────────────
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::middleware('throttle:api-auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+});
 
 // ── Protected routes (login required) ────────────────────────────────────
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 
     // Auth
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -65,5 +67,5 @@ Route::middleware('auth:sanctum')->group(function () {
     // Settings
     Route::get('/settings', [SettingsController::class, 'index']);
     Route::put('/settings', [SettingsController::class, 'update']);
-    Route::post('/settings/password', [SettingsController::class, 'changePassword']);
+    Route::post('/settings/password', [SettingsController::class, 'changePassword'])->middleware('throttle:password-change');
 });

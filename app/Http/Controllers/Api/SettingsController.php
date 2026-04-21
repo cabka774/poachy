@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 
 class SettingsController extends Controller
 {
+    use ApiResponse;
+
     public function index(Request $request): JsonResponse
     {
         $settings = Setting::firstOrCreate(
@@ -22,7 +25,7 @@ class SettingsController extends Controller
             ]
         );
 
-        return response()->json(['data' => $settings]);
+        return $this->success($settings);
     }
 
     public function update(Request $request): JsonResponse
@@ -42,22 +45,21 @@ class SettingsController extends Controller
             $validated
         );
 
-        return response()->json(['data' => $settings, 'message' => 'Settings saved']);
+        return $this->success($settings, 'Settings saved');
     }
 
     public function changePassword(Request $request): JsonResponse
     {
-        $request->validate([
-            'current_password' => 'required|string',
-            'password' => 'required|string|min:8|confirmed',
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        if (!Hash::check($request->current_password, $request->user()->password)) {
-            return response()->json(['message' => 'Current password is incorrect'], 422);
-        }
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
 
-        $request->user()->update(['password' => $request->password]);
-        return response()->json(['message' => 'Password changed successfully']);
+        return $this->success(null, 'Password changed successfully');
     }
 }
 

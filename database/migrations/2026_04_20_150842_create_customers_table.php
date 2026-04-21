@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['user_id', 'name']);
+            $table->index(['user_id', 'created_at']);
             $table->unique(['user_id', 'phone']);
             $table->unique(['user_id', 'email']);
         });

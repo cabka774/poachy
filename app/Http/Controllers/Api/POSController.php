@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
@@ -14,6 +15,8 @@ use Illuminate\Validation\ValidationException;
 
 class POSController extends Controller
 {
+    use ApiResponse;
+
     public function products(): JsonResponse
     {
         $products = Product::query()
@@ -28,15 +31,11 @@ class POSController extends Controller
                 'stock' => (int) $p->stock,
             ]);
 
-        return response()->json(['data' => $products]);
+        return $this->success($products);
     }
 
     public function recordSale(Request $request): JsonResponse
     {
-        if (!$request->user()) {
-            return response()->json(['message' => 'Unauthenticated.'], 401);
-        }
-
         $data = $request->validate([
             'items' => ['required', 'array', 'min:1'],
             'items.*.product_id' => ['required', 'integer', 'exists:products,id'],
@@ -109,12 +108,11 @@ class POSController extends Controller
         /** @var Sale $sale */
         $sale = $result['sale'];
 
-        return response()->json([
-            'message' => 'Sale recorded successfully',
+        return $this->created([
             'receipt_number' => $sale->receipt_number,
             'total' => (float) $sale->total,
             'payment_method' => $sale->payment_method,
-        ], 201);
+        ], 'Sale recorded successfully');
     }
 }
 

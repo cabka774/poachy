@@ -6,11 +6,6 @@ use Illuminate\View\View;
 
 class PoachyController extends Controller
 {
-    public function login(): View
-    {
-        return view('poachy.login');
-    }
-
     public function dashboard(): View
     {
         return view('poachy.dashboard', ['activePage' => 'dashboard']);

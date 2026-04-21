@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use Carbon\Carbon;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class ReportsController extends Controller
 {
+    use ApiResponse;
+
     public function index(): JsonResponse
     {
         $start = Carbon::today()->subDays(6)->startOfDay();
@@ -52,7 +55,7 @@ class ReportsController extends Controller
             ->orderByDesc('qty')
             ->first();
 
-        return response()->json([
+        return $this->success([
             'weekly_revenue' => $weeklyRevenue,
             'sales_by_category' => $salesByCategory,
             'summary' => [
