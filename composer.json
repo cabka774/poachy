@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "cabka774/poachy",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Poachy — multi-tenant Laravel app (POS, inventory, customers, reporting) using Stancl Tenancy.",
+    "keywords": ["laravel", "poachy", "tenancy", "pos", "api"],
     "license": "MIT",
     "require": {
         "php": "^8.2",

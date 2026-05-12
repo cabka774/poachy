@@ -1,6 +1,6 @@
 ## Poachy backend fixes (Fix 1–Fix 9)
 
-This folder summarizes the changes implemented in `C:\Users\cabka\Desktop\poachy`.
+This folder summarizes backend hardening and related changes implemented in this repository (historical notes).
 
 ### Fix 1 — Add indexes to all migrations (performance)
 
